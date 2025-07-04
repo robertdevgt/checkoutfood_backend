@@ -18,6 +18,7 @@ router.post('/create-account',
     }),
     body('phone').notEmpty().withMessage('El número de telefono es requerido'),
     body('email').isEmail().withMessage('E-mail no válido'),
+    body('role').notEmpty().withMessage('El rol es requerido'),
     handleInputErrors,
     AuthController.createAccount
 )

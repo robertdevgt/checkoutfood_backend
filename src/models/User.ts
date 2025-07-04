@@ -7,6 +7,7 @@ export interface IUser extends Document {
     name: string
     confirmed: boolean
     phone: string;
+    role: string;
     addresses: IAddress[];
 }
 
@@ -26,6 +27,10 @@ const userSchema: Schema = new Schema({
         required: true
     },
     phone: {
+        type: String,
+        required: true
+    },
+    role: {
         type: String,
         required: true
     },
