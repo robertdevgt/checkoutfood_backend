@@ -46,7 +46,7 @@ export class AuthController {
             const user = await User.findOne({ email });
 
             if (!user) {
-                res.status(404).send('Usuario no encontrado');
+                res.status(404).json({ error: 'Usuario no encontrado' });
                 return;
             }
 
@@ -66,7 +66,7 @@ export class AuthController {
                 return;
             }
 
-            const correctPassword = await checkPassword(password,user.password);
+            const correctPassword = await checkPassword(password, user.password);
             if (correctPassword) {
                 const token = generateJWT(user);
                 res.send(token);
@@ -210,4 +210,11 @@ export class AuthController {
         }
     }
 
+    static user = async (req: Request, res: Response) => {
+        try {
+            res.send(req.user);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 }

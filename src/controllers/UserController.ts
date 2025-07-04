@@ -26,4 +26,12 @@ export class UserController {
             res.status(404).json({ error: error.message });
         }
     }
+
+    static async getAddresses(req: Request, res: Response) {
+        try {
+            res.json(req.user.addresses);
+        } catch (error) {
+            res.status(404).json({ error: error.message });
+        }
+    }
 }

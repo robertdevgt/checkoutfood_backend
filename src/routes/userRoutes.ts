@@ -23,4 +23,8 @@ router.delete('/delete-address/:addressId',
     UserController.deleteAddress
 );
 
+router.get('/addresses',
+    UserController.getAddresses
+)
+
 export default router;
