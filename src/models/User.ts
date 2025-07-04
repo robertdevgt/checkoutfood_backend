@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose"
+import { addressSchema, IAddress } from "./Address"
 
 export interface IUser extends Document {
     email: string
@@ -6,6 +7,7 @@ export interface IUser extends Document {
     name: string
     confirmed: boolean
     phone: string;
+    addresses: IAddress[];
 }
 
 const userSchema: Schema = new Schema({
@@ -31,6 +33,7 @@ const userSchema: Schema = new Schema({
         type: Boolean,
         default: false
     },
+    addresses: [addressSchema]
 })
 
 const User = mongoose.model<IUser>('User', userSchema)

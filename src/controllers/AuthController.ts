@@ -66,14 +66,15 @@ export class AuthController {
                 return;
             }
 
-            if (checkPassword(password, user.password)) {
+            const correctPassword = await checkPassword(password,user.password);
+            if (correctPassword) {
                 const token = generateJWT(user);
                 res.send(token);
             } else {
                 res.status(401).json({ error: 'Credenciales incorrectas' });
             }
         } catch (error) {
-            res.status(500).json({ error: 'Hubo un error' });
+            res.status(500).json({ error: error.message });
         }
     }
 
