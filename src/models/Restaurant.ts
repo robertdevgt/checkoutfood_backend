@@ -16,7 +16,6 @@ const restaurantSchema: Schema = new Schema({
     name: {
         type: String,
         required: true,
-        lowercase: true,
     },
     address: {
         type: String,

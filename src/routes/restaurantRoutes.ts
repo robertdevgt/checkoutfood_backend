@@ -28,4 +28,8 @@ router.get('/',
     RestaurantController.getRestaurants
 );
 
+router.get('/nerby/:latitude/:longitude',
+    RestaurantController.getNerbyResturants
+)
+
 export default router;

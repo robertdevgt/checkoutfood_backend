@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import sharp from 'sharp';
 import path from "path";
 import Restaurant from "../models/Restaurant";
+import { getDistanceInKm } from "../utils/distance";
 
 export class RestaurantController {
     static async createRestaurant(req: Request, res: Response) {
@@ -27,6 +28,31 @@ export class RestaurantController {
             const restaurants = await Restaurant.find({ manager: req.user.id });
 
             res.send(restaurants);
+        } catch (error) {
+            res.status(500).json({ error: 'Hubo un error' });
+        }
+    }
+
+    static async getNerbyResturants(req: Request, res: Response) {
+        try {
+            const { latitude, longitude } = req.params;
+
+            const filteredRestaurants = [];
+
+            const restaurants = await Restaurant.find({}, '_id name address latitude longitude logo');
+
+            restaurants.map(restaurant => {
+                const distance = getDistanceInKm(+latitude, +longitude, restaurant.latitude, restaurant.longitude);
+                if (distance < 10) {
+                    filteredRestaurants.push({
+                        ...restaurant.toObject(),
+                        distance: distance
+                    });
+                }
+            });
+
+            res.json(filteredRestaurants);
+
         } catch (error) {
             res.status(500).json({ error: 'Hubo un error' });
         }
