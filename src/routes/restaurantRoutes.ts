@@ -2,8 +2,9 @@ import { Router } from "express";
 import { authenticate } from "../middleware/auth";
 import { RestaurantController } from "../controllers/RestaurantController";
 import { handleInputErrors } from "../middleware/validation";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { imageExists } from "../middleware/img";
+import { restaurantExists } from "../middleware/restaurant";
 import multer from 'multer';
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -31,5 +32,31 @@ router.get('/',
 router.get('/nerby/:latitude/:longitude',
     RestaurantController.getNerbyResturants
 )
+
+router.param('restaurantId', restaurantExists);
+
+router.post('/add-product/:restaurantId',
+    upload.single('img'),
+    body('price').notEmpty().withMessage('El precio es requerido').isNumeric().withMessage('El precio debe de ser un número'),
+    body('name').notEmpty().withMessage('El nombre del producto es requerido'),
+    body('category').notEmpty().withMessage('La categoria es requerida'),
+    body('description').notEmpty().withMessage('La descripción es requerida'),
+    handleInputErrors,
+    imageExists,
+    RestaurantController.addProduct
+)
+
+router.get('/:restaurantId',
+    handleInputErrors,
+    RestaurantController.getRestaurantById
+)
+
+router.patch('/updateproduct-status/:productId',
+    param('productId').isMongoId().withMessage('El id no es válido'),
+    handleInputErrors,
+    RestaurantController.changeProductStatus
+)
+
+
 
 export default router;

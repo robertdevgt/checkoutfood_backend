@@ -1,5 +1,6 @@
 import mongoose, { Document, PopulatedDoc, Schema, Types } from "mongoose";
 import { IUser } from "./User";
+import { IProduct } from "./Product";
 
 export interface IRestaurant extends Document {
     _id: Types.ObjectId;
@@ -8,8 +9,9 @@ export interface IRestaurant extends Document {
     latitude: number;
     longitude: number;
     logo: string;
-    manager: PopulatedDoc<IUser & Document>;
     description: string;
+    manager: PopulatedDoc<IUser & Document>;
+    products: PopulatedDoc<IProduct & Document>[];
 }
 
 const restaurantSchema: Schema = new Schema({
@@ -44,6 +46,13 @@ const restaurantSchema: Schema = new Schema({
         type: Types.ObjectId,
         ref: 'User'
     },
+
+    products: [
+        {
+            type: Types.ObjectId,
+            ref: 'Product'
+        }
+    ]
 });
 
 const Restaurant = mongoose.model<IRestaurant>('Restaurant', restaurantSchema);
