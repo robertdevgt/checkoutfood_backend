@@ -103,9 +103,27 @@ export class RestaurantController {
 
     static async getRestaurantById(req: Request, res: Response) {
         try {
-            const restaurant = await Restaurant.findById(req.restaurant.id).select('_id name address latitude longitude description logo manager').populate('products');
+            const restaurant = await Restaurant.findById(req.restaurant.id).select('_id name address latitude longitude description logo manager');
 
             res.json(restaurant);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async getAllRestaurantProducts(req: Request, res: Response) {
+        try {
+            const { query, status } = req.query;
+
+            let products: typeof Product[];
+
+            if (status) {
+                products = await Product.find({ status, name: { $regex: query ?? '', $options: 'i' } });
+            } else {
+                products = await Product.find({ name: { $regex: query ?? '', $options: 'i' } });
+            }
+
+            res.json(products);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

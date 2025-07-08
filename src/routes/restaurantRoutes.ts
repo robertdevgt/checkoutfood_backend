@@ -51,6 +51,11 @@ router.get('/:restaurantId',
     RestaurantController.getRestaurantById
 )
 
+router.get('/products/:restaurantId',
+    handleInputErrors,
+    RestaurantController.getAllRestaurantProducts
+)
+
 router.patch('/updateproduct-status/:productId',
     param('productId').isMongoId().withMessage('El id no es válido'),
     handleInputErrors,
