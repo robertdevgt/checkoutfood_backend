@@ -11,6 +11,22 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const router = Router();
 
+router.get('/nerby/:latitude/:longitude',
+    RestaurantController.getNerbyResturants
+)
+
+router.get('/:restaurantId',
+    handleInputErrors,
+    RestaurantController.getRestaurantById
+)
+
+
+router.get('/products/:restaurantId',
+    handleInputErrors,
+    RestaurantController.getAllRestaurantProducts
+)
+
+
 router.use(authenticate);
 
 router.post('/',
@@ -29,9 +45,7 @@ router.get('/',
     RestaurantController.getRestaurants
 );
 
-router.get('/nerby/:latitude/:longitude',
-    RestaurantController.getNerbyResturants
-)
+
 
 router.param('restaurantId', restaurantExists);
 
@@ -44,16 +58,6 @@ router.post('/add-product/:restaurantId',
     handleInputErrors,
     imageExists,
     RestaurantController.addProduct
-)
-
-router.get('/:restaurantId',
-    handleInputErrors,
-    RestaurantController.getRestaurantById
-)
-
-router.get('/products/:restaurantId',
-    handleInputErrors,
-    RestaurantController.getAllRestaurantProducts
 )
 
 router.patch('/updateproduct-status/:productId',

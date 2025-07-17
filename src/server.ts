@@ -5,6 +5,7 @@ import dontenv from "dotenv";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import restaurantRoutes from "./routes/restaurantRoutes";
+import orderRoutes from "./routes/orderRoutes";
 import cors from "cors";
 import path from "path";
 
@@ -22,5 +23,6 @@ app.use(express.json())
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/orders', orderRoutes);
 
 export default app;

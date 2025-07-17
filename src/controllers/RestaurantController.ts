@@ -113,14 +113,15 @@ export class RestaurantController {
 
     static async getAllRestaurantProducts(req: Request, res: Response) {
         try {
-            const { query, status } = req.query;
+            const { query, status, category } = req.query;
+            const { restaurantId } = req.params;
 
             let products: typeof Product[];
 
             if (status) {
-                products = await Product.find({ status, name: { $regex: query ?? '', $options: 'i' } });
+                products = await Product.find({ restaurant: restaurantId, category: { $regex: category ?? '', $options: 'i' }, status, name: { $regex: query ?? '', $options: 'i' } });
             } else {
-                products = await Product.find({ name: { $regex: query ?? '', $options: 'i' } });
+                products = await Product.find({ restaurant: restaurantId, category: { $regex: category ?? '', $options: 'i' }, name: { $regex: query ?? '', $options: 'i' } });
             }
 
             res.json(products);
